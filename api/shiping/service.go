@@ -1,11 +1,17 @@
 package shiping
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+
+	"github.com/api-service/api/destination"
+)
 
 type ShipingService interface {
 	CreateNewShiping(payload *Shiping) (*Shiping, error)
 	GetAllShipings() (*[]Shiping, error)
 	GetShipingById(id string) (*Shiping, error)
+	CalculateCost(payload destination.RequestDestination) (*float64, error)
 }
 
 type shipingService struct {
@@ -33,4 +39,27 @@ func (s *shipingService) GetShipingById(id string) (*Shiping, error) {
 		return nil, errors.New("failed to retrieve shiping by id")
 	}
 	return data, nil
+}
+
+func (s *shipingService) CalculateCost(payload destination.RequestDestination) (*float64, error) {
+	// Mendapatkan jarak dari fungsi repository
+	distance, err := s.repo.GetDestination(payload)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get destination: %w", err)
+	}
+
+	if distance == nil || *distance <= 0 {
+		return nil, errors.New("invalid distance value")
+	}
+
+	// Kalkulasi ongkos berdasarkan jumlah barang dan jarak
+	var costPerKm float64
+	if payload.Qty <= 2 {
+		costPerKm = 2000
+	} else {
+		costPerKm = 4000
+	}
+
+	cost := *distance * costPerKm
+	return &cost, nil
 }

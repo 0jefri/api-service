@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/api-service/api/destination"
 	"github.com/api-service/dto"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -114,5 +115,41 @@ func (h *shipingHandler) GetShipingById(c *gin.Context) {
 		"status":  "Success",
 		"message": "Shiping retrieved successfully",
 		"data":    data,
+	})
+}
+
+func (h *shipingHandler) CalculateShippingCost(c *gin.Context) {
+	var payload destination.RequestDestination
+
+	// Bind JSON payload
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    http.StatusBadRequest,
+			"status":  "Bad Request",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	// Panggil service untuk kalkulasi ongkos
+	cost, err := h.service.CalculateCost(payload)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    http.StatusInternalServerError,
+			"status":  "Internal Server Error",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	// Response sukses
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"status":  "success",
+		"message": "Shipping cost calculated successfully",
+		"data": map[string]interface{}{
+			"distance": payload.DestinationLongLat,
+			"cost":     *cost,
+		},
 	})
 }
