@@ -88,3 +88,31 @@ func (h *shipingHandler) ListShipings(c *gin.Context) {
 		Data:    data,
 	})
 }
+
+func (h *shipingHandler) GetShipingById(c *gin.Context) {
+	id := c.Param("id")
+	data, err := h.service.GetShipingById(id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"code":    http.StatusNotFound,
+				"status":  "Not Found",
+				"message": "Shiping not found",
+			})
+			return
+		}
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"code":    http.StatusInternalServerError,
+			"status":  "Error",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"status":  "Success",
+		"message": "Shiping retrieved successfully",
+		"data":    data,
+	})
+}

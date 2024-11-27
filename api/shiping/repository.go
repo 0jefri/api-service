@@ -9,6 +9,7 @@ import (
 type ShipingRepository interface {
 	Create(payload *Shiping) (*Shiping, error)
 	List() (*[]Shiping, error)
+	GetById(id string) (*Shiping, error)
 }
 
 type shipingRepository struct {
@@ -39,4 +40,15 @@ func (r *shipingRepository) List() (*[]Shiping, error) {
 		return nil, errors.New("no shiping data available")
 	}
 	return &shipings, nil
+}
+
+func (r *shipingRepository) GetById(id string) (*Shiping, error) {
+	var shiping Shiping
+	if err := r.db.First(&shiping, "id = ?", id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("shiping not found")
+		}
+		return nil, errors.New("failed to retrieve data")
+	}
+	return &shiping, nil
 }

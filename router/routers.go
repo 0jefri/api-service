@@ -23,6 +23,7 @@ func SetupRouter(router *gin.Engine) error {
 			{
 				shiping.POST("/register-shiping", shipingHandler.AddShiping)
 				shiping.GET("/list-shiping", shipingHandler.ListShipings)
+				shiping.GET("/:id", shipingHandler.GetShipingById)
 			}
 		}
 	}
