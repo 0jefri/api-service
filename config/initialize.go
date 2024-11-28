@@ -21,17 +21,4 @@ func InitiliazeConfig() {
 		panic(err)
 	}
 
-	// appTokenExpire, _ := strconv.Atoi(Cfg.Token.Expire)
-
-	// // if err != nil {
-	// // 	panic(err)
-	// // }
-
-	// Cfg.TokenConfig = TokenConfig{
-	// 	ApplicationName:     Cfg.Token.Name,
-	// 	JWTSignatureKey:     []byte(Cfg.Token.Key),
-	// 	JWTSigningMethod:    jwt.SigningMethodHS256,
-	// 	AccessTokenLifeTime: time.Duration(appTokenExpire) * time.Hour,
-	// }
-
 }

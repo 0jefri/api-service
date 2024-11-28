@@ -15,31 +15,8 @@ type Database struct {
 	Driver   string `mapstructure:"driver"`
 }
 
-// type File struct {
-// 	Path string `mapstructure:"path"`
-// 	// UserPicturePath string `mapstructure:"picture_path"`
-// }
-
-// // Token Config
-// type Token struct {
-// 	Name   string `mapstructure:"name"`
-// 	Key    string `mapstructure:"key"`
-// 	Expire string `mapstructure:"expire"`
-// }
-
-// type TokenConfig struct {
-// 	ApplicationName     string
-// 	JWTSignatureKey     []byte
-// 	JWTSigningMethod    *jwt.SigningMethodHMAC
-// 	AccessTokenLifeTime time.Duration
-// }
-
 // Configuration
 type Config struct {
 	Server   `mapstructure:"server"`
 	Database `mapstructure:"database"`
-	// File     `mapstructure:"file"`
-	// Token    `mapstructure:"token"`
-	// TokenConfig
-	// DefaultRowsPerPage string `mapstructure:"DEFAULT_ROWS_PER_PAGE"`
 }

@@ -1,6 +1,7 @@
 package router
 
 import (
+	ordershiping "github.com/api-service/api/order_shiping"
 	"github.com/api-service/api/shiping"
 	"github.com/api-service/config"
 	"github.com/api-service/manager"
@@ -14,6 +15,7 @@ func SetupRouter(router *gin.Engine) error {
 	repoManager := manager.NewServiceManager(serviceManager)
 
 	shipingHandler := shiping.NewShipingHandler(repoManager.ShipingService())
+	orderShipingHandler := ordershiping.NewOrderShippingHandler(repoManager.OrderShipingService())
 
 	v1 := router.Group("/api/v1")
 	{
@@ -25,6 +27,10 @@ func SetupRouter(router *gin.Engine) error {
 				shiping.GET("/list-shiping", shipingHandler.ListShipings)
 				shiping.GET("/:id", shipingHandler.GetShipingById)
 				shiping.GET("/cost", shipingHandler.CalculateShippingCost)
+			}
+			orderShiping := eCommerce.Group("/order")
+			{
+				orderShiping.POST("/create", orderShipingHandler.CreateOrder)
 			}
 		}
 	}

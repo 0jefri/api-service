@@ -5,6 +5,8 @@ import (
 	"sync"
 	"time"
 
+	ordershiping "github.com/api-service/api/order_shiping"
+	"github.com/api-service/api/seeder"
 	"github.com/api-service/api/shiping"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -33,11 +35,15 @@ func InitDB() {
 }
 
 func SyncDB() {
-	if err := DB.AutoMigrate(&shiping.Shiping{}); err != nil {
+	if err := DB.AutoMigrate(&shiping.Shiping{}, &ordershiping.OrderShipping{}); err != nil {
 		fmt.Printf("AutoMigrate error: %s\n", err)
 		panic(err)
 	} else {
 		fmt.Println("Database migrated successfully!")
 	}
 
+	seeder.SeedOrderShipping(DB)
+	// if err := seeder.SeedOrderShipping(DB); err != nil {
+	// 	panic("Failed to seed data")
+	// }
 }

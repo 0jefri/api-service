@@ -1,9 +1,13 @@
 package manager
 
-import "github.com/api-service/api/shiping"
+import (
+	ordershiping "github.com/api-service/api/order_shiping"
+	"github.com/api-service/api/shiping"
+)
 
 type ServiceManager interface {
 	ShipingService() shiping.ShipingService
+	OrderShipingService() ordershiping.OrderShippingService
 }
 
 type serviceManager struct {
@@ -18,4 +22,8 @@ func NewServiceManager(repo RepoManager) ServiceManager {
 
 func (m *serviceManager) ShipingService() shiping.ShipingService {
 	return shiping.NewShipingService(m.repoManager.ShipingRepo())
+}
+
+func (m *serviceManager) OrderShipingService() ordershiping.OrderShippingService {
+	return ordershiping.NewOrderShippingService(m.repoManager.OrderShipingRepo())
 }
