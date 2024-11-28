@@ -8,6 +8,7 @@ import (
 	ordershiping "github.com/api-service/api/order_shiping"
 	"github.com/api-service/api/seeder"
 	"github.com/api-service/api/shiping"
+	statusorder "github.com/api-service/api/status_order"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -35,7 +36,7 @@ func InitDB() {
 }
 
 func SyncDB() {
-	if err := DB.AutoMigrate(&shiping.Shiping{}, &ordershiping.OrderShipping{}); err != nil {
+	if err := DB.AutoMigrate(&shiping.Shiping{}, &ordershiping.OrderShipping{}, &statusorder.StatusOder{}); err != nil {
 		fmt.Printf("AutoMigrate error: %s\n", err)
 		panic(err)
 	} else {

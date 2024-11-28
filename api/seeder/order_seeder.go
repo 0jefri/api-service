@@ -4,19 +4,23 @@ import (
 	"log"
 
 	ordershiping "github.com/api-service/api/order_shiping"
+	"github.com/api-service/api/shiping"
 	"gorm.io/gorm"
 )
 
 func SeedOrderShipping(db *gorm.DB) {
 	data := []ordershiping.OrderShipping{
 		{
-			OrderID:              "order-001-shope-123",
-			EcommerceID:          "ecommerce-uuid-002",
-			ShippingID:           "2ca3934a-0bb1-4595-9e66-7e31a92e8a41",
-			OriginLongitude:      "106.816666",
-			DestinationLatitude:  "-6.200000",
-			DestinationLongitude: "107.620000",
-			TotalPaymentShipping: 150000.00,
+			OrderID:     "order-009",
+			EcommerceID: "1232112",
+			Shipping: shiping.Shiping{
+				ID:   "154c0255-198f-40e3-af94-61d28531b3ae",
+				Name: "JNT",
+			},
+			OriginLongitude:      "106.84513",
+			DestinationLatitude:  "-6.20876",
+			DestinationLongitude: "107.62111",
+			TotalPaymentShipping: 180000.50,
 		},
 	}
 

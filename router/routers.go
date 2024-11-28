@@ -3,6 +3,7 @@ package router
 import (
 	ordershiping "github.com/api-service/api/order_shiping"
 	"github.com/api-service/api/shiping"
+	statusorder "github.com/api-service/api/status_order"
 	"github.com/api-service/config"
 	"github.com/api-service/manager"
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,7 @@ func SetupRouter(router *gin.Engine) error {
 
 	shipingHandler := shiping.NewShipingHandler(repoManager.ShipingService())
 	orderShipingHandler := ordershiping.NewOrderShippingHandler(repoManager.OrderShipingService())
+	statusOrderHandler := statusorder.NewHandler(repoManager.StatusService())
 
 	v1 := router.Group("/api/v1")
 	{
@@ -31,6 +33,11 @@ func SetupRouter(router *gin.Engine) error {
 			orderShiping := eCommerce.Group("/order")
 			{
 				orderShiping.POST("/create", orderShipingHandler.CreateOrder)
+			}
+			statusOrder := eCommerce.Group("/status")
+			{
+				statusOrder.POST("/create", statusOrderHandler.CreateStatusOrder)
+				statusOrder.GET("/list-status", statusOrderHandler.GetStatusOrders)
 			}
 		}
 	}

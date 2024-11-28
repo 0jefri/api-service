@@ -4,7 +4,7 @@ import "github.com/api-service/api/shiping"
 
 type OrderShipping struct {
 	OrderID              string          `gorm:"type:varchar(255);primaryKey;not null;unique" json:"order_id" binding:"required"`
-	EcommerceID          string          `gorm:"type:uuid;primaryKey;not null;unique" json:"ecommerce_ID" binding:"required"`
+	EcommerceID          string          `gorm:"type:varchar(100);primaryKey;not null;" json:"ecommerce_ID" binding:"required"`
 	ShippingID           string          `gorm:"type:uuid;not null"`
 	Shipping             shiping.Shiping `gorm:"foreignKey:ShippingID;references:ID" json:"shipping"`
 	OriginLongitude      string          `gorm:"type:varchar(100);not null" json:"origin_longitude"`
